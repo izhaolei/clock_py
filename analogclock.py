@@ -192,7 +192,11 @@ class AnalogClock(wx.PyWindow):
         dc.Clear()
         self.Box.Draw(dc)
 
-
+    def SetDegree(self, degree):
+        """set the degree of minutes clock"""
+        deg=int(degree/6)
+        self.Hands.SetPos(0,deg,0)
+        
     def _drawHands(self, dc):
         """
         Draws the face bitmap, created on the last DrawBox call, and

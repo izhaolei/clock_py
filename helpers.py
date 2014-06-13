@@ -451,7 +451,11 @@ class Dyer:
 
 class HandSet:
     """Manages the set of hands."""
+    num=None
 
+    def SetPos(self,degrees1,degrees2,degrees3):
+        self.num = [int(degrees1),int(degrees2),int(degrees3)]
+	
     def __init__(self, parent, h, m, s):
         self.parent = parent
 
@@ -461,8 +465,7 @@ class HandSet:
 
 
     def _draw(self, dc, shadow=False):
-        ends = [int(x) for x in strftime("%I %M %S", localtime()).split()]
-
+        ends =self.num
         flags = [self.parent.clockStyle & flag \
                  for flag in self.parent.allHandStyles]
 
