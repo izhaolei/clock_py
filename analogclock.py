@@ -102,7 +102,7 @@ class AnalogClock(wx.PyWindow):
         # Update every half second to ensure that there is at least one true
         # update during each realtime second.
         self.timer = wx.Timer(self)
-        self.timer.Start(500)
+        self.timer.Start(50)
 
 
     def DoGetBestSize(self):
