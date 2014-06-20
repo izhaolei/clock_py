@@ -20,14 +20,15 @@ class SketchFrame(wx.Frame):
 
     Clock = None
     List = None
-    Text=None
+    Statusbar = None
     DegreeData=[]
 
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, -1, "Degree Measure")
         self.SetMinSize((700, 450))
-        sz = wx.GridBagSizer(2, 2)
+        self.Statusbar = self.CreateStatusBar()
+        sz = wx.GridBagSizer(1, 2)
 
         self.Clock = AnalogClock(self,-1, wx.DefaultPosition)
         self.Clock.SetClockStyle(SHOW_MINUTES_HAND|SHOW_MINUTES_TICKS|TICKS_CIRCLE)
@@ -39,10 +40,7 @@ class SketchFrame(wx.Frame):
         self.Bind(wx.EVT_LISTBOX, self.EvtListBox, self.List)
         sz.Add(self.List, pos=(0,1),flag= wx.EXPAND)
 
-        self.Text = wx.TextCtrl(self, -1, "Degree", 
-                (0, 0))
-
-        sz.Add(self.Text, pos=(1,0), span=(1,2),flag=wx.ALIGN_CENTER)
+        self.Statusbar.SetStatusText("No degree found!")
 
         sz.AddGrowableCol(0)
         sz.AddGrowableRow(0)
@@ -75,4 +73,4 @@ class SketchFrame(wx.Frame):
             de = de - 360
 
         self.Clock.SetDegree(de)
-        self.Text.Replace(0,18,(str)(de))
+        self.Statusbar.SetStatusText("Degree: " + str(de) + "`C")
