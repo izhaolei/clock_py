@@ -1,10 +1,11 @@
+#!/usr/bin/python
 import GUILib
 import wx
 
-app = wx.App()
+app = wx.PySimpleApp()
 Frame = GUILib.SketchFrame(None)
 Frame.Show(True)
-Frame.RefreshData([20,50,57,80])#这个就是接口传入数组即可
-for i in range(1,5):
-    Frame.LST.Insert(str(i)) 
+Frame.RefreshData([20,50,57,80])
+wx.FutureCall(3000,Frame.RefreshData,[20,50,57,80, -90])
+wx.FutureCall(6000,Frame.RefreshData,[570,-80, -90])
 app.MainLoop()
