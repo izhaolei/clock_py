@@ -57,7 +57,6 @@ class SketchFrame(wx.Frame):
     def RefreshData(self, data):
         self.DegreeData = data
         diff = len(data) - self.List.GetCount()
-        print diff
         while diff:
             if diff > 0:
                 self.List.Insert(self.List.GetCount() + 1) 
