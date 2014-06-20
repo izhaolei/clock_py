@@ -4,7 +4,7 @@ import wx
 app = wx.App()
 Frame = GUILib.SketchFrame(None)
 Frame.Show(True)
-Frame.RefreshData([20,50,57,80])#这个就是接口传入数组
+Frame.RefreshData([20,50,57,80])#杩欎釜灏辨槸鎺ュ彛浼犲叆鏁扮粍鍗冲彲
 for i in range(1,5):
     Frame.LST.Insert(str(i)) 
 app.MainLoop()
