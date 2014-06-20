@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import wx
 
 from analogclock import *
@@ -73,4 +74,4 @@ class SketchFrame(wx.Frame):
             de = de - 360
 
         self.Clock.SetDegree(de)
-        self.Statusbar.SetStatusText("Degree: " + str(de) + "`C")
+        self.Statusbar.SetStatusText("Degree: " + str(de) + "°")
