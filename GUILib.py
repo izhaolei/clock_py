@@ -29,6 +29,14 @@ class SketchFrame(wx.Frame):
         wx.Frame.__init__(self, parent, -1, "Degree Measure")
         self.SetMinSize((700, 450))
         self.Statusbar = self.CreateStatusBar()
+
+        menu = wx.Menu()
+        exit = menu.Append(-1, "Exit")
+        self.Bind(wx.EVT_MENU, self.OnExit, exit)
+        Menubar = wx.MenuBar()
+        Menubar.Append(menu, "Files")
+        self.SetMenuBar(Menubar)
+
         sz = wx.GridBagSizer(1, 2)
 
         self.Clock = AnalogClock(self,-1, wx.DefaultPosition)
@@ -47,6 +55,10 @@ class SketchFrame(wx.Frame):
         sz.AddGrowableRow(0)
         self.SetSizer(sz)
         self.Fit()
+
+
+    def OnExit(self, event):
+        self.Close()
 
 
     def EvtListBox(self, event):
