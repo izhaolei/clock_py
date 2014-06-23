@@ -38,26 +38,28 @@ class SketchFrame(wx.Frame):
         Menubar.Append(menu, "Files")
         self.SetMenuBar(Menubar)
 
-        sz = wx.GridBagSizer(2, 2)
+        sz = wx.GridBagSizer(2, 5)
+        sz.AddSpacer((-1,5), pos=(0,0))
 
         self.Text = wx.StaticText(self, -1, style=wx.ALIGN_CENTER)
-        sz.Add(self.Text, pos=(0,0), flag=wx.ALIGN_CENTER)
+        self.Text.SetMaxSize((-1,17))
+        sz.Add(self.Text, pos=(1,0), flag=wx.ALIGN_CENTER, border=5)
 
         self.Clock = AnalogClock(self,-1, wx.DefaultPosition)
         self.Clock.SetClockStyle(SHOW_MINUTES_HAND|SHOW_MINUTES_TICKS|TICKS_CIRCLE)
         self.Clock.SetDegree(0)
-        sz.Add(self.Clock, pos=(1,0), flag=wx.GROW)
+        sz.Add(self.Clock, pos=(2,0), flag=wx.GROW)
 
         self.List = DegreeList(self, -1, size=(200, 200))
         self.List.SetMinSize((200, 200))
         self.Bind(wx.EVT_LISTBOX, self.EvtListBox, self.List)
-        sz.Add(self.List, pos=(0,1), span=(2,1), flag= wx.EXPAND)
+        sz.Add(self.List, pos=(0,1), span=(3,1), flag= wx.EXPAND)
 
-        self.Statusbar.SetStatusText("No degree found!")
-        self.Text.SetLabel("No degree found!")
+        self.Statusbar.SetStatusText("No degree selected!")
+        self.Text.SetLabel("No degree selected!")
 
         sz.AddGrowableCol(0)
-        sz.AddGrowableRow(1)
+        sz.AddGrowableRow(2)
         self.SetSizer(sz)
         self.Fit()
 
@@ -79,8 +81,6 @@ class SketchFrame(wx.Frame):
             if diff < 0:
                 self.List.Delete(self.List.GetCount() - 1) 
             diff = len(data) - self.List.GetCount()
-
-        self.ShowDegree()
 
 
     def ShowDegree(self):
