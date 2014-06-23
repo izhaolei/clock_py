@@ -22,6 +22,7 @@ class SketchFrame(wx.Frame):
     Clock = None
     List = None
     Statusbar = None
+    Text = None
     DegreeData=[]
 
 
@@ -37,22 +38,26 @@ class SketchFrame(wx.Frame):
         Menubar.Append(menu, "Files")
         self.SetMenuBar(Menubar)
 
-        sz = wx.GridBagSizer(1, 2)
+        sz = wx.GridBagSizer(2, 2)
+
+        self.Text = wx.StaticText(self, -1, style=wx.ALIGN_CENTER)
+        sz.Add(self.Text, pos=(0,0), flag=wx.ALIGN_CENTER)
 
         self.Clock = AnalogClock(self,-1, wx.DefaultPosition)
         self.Clock.SetClockStyle(SHOW_MINUTES_HAND|SHOW_MINUTES_TICKS|TICKS_CIRCLE)
         self.Clock.SetDegree(0)
-        sz.Add(self.Clock,pos= (0,0),flag=wx.GROW)
+        sz.Add(self.Clock, pos=(1,0), flag=wx.GROW)
 
         self.List = DegreeList(self, -1, size=(200, 200))
         self.List.SetMinSize((200, 200))
         self.Bind(wx.EVT_LISTBOX, self.EvtListBox, self.List)
-        sz.Add(self.List, pos=(0,1),flag= wx.EXPAND)
+        sz.Add(self.List, pos=(0,1), span=(2,1), flag= wx.EXPAND)
 
         self.Statusbar.SetStatusText("No degree found!")
+        self.Text.SetLabel("No degree found!")
 
         sz.AddGrowableCol(0)
-        sz.AddGrowableRow(0)
+        sz.AddGrowableRow(1)
         self.SetSizer(sz)
         self.Fit()
 
@@ -62,7 +67,7 @@ class SketchFrame(wx.Frame):
 
 
     def EvtListBox(self, event):
-        self.ShowDregree()
+        self.ShowDegree()
 
 
     def RefreshData(self, data):
@@ -75,10 +80,10 @@ class SketchFrame(wx.Frame):
                 self.List.Delete(self.List.GetCount() - 1) 
             diff = len(data) - self.List.GetCount()
 
-        self.ShowDregree()
+        self.ShowDegree()
 
 
-    def ShowDregree(self):
+    def ShowDegree(self):
         de = self.DegreeData[self.List.GetSelection()]
         while de < 0:
             de = 360 + de
@@ -86,4 +91,5 @@ class SketchFrame(wx.Frame):
             de = de - 360
 
         self.Clock.SetDegree(de)
-        self.Statusbar.SetStatusText("Degree: " + str(de) + "°")
+        self.Statusbar.SetStatusText("Degree: %.4f°"%(de))
+        self.Text.SetLabel("Degree: %.4f°"%(de))
