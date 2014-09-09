@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import wx
 
+import time
+
 from analogclock import *
 
 class DegreeList(wx.ListBox):
@@ -24,13 +26,15 @@ class SketchFrame(wx.Frame):
     Statusbar = None
     Text = None
     DegreeData=[]
-
+    de=0
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, -1, "Degree Measure")
         self.SetMinSize((700, 450))
         self.Statusbar = self.CreateStatusBar()
-
+        self.timer = wx.PyTimer(self.Notify)
+        self.timer.Start(100)
+        self.Notify()
         menu = wx.Menu()
         exit = menu.Append(-1, "Exit")
         self.Bind(wx.EVT_MENU, self.OnExit, exit)
@@ -72,7 +76,11 @@ class SketchFrame(wx.Frame):
 
     def EvtListBox(self, event):
         self.ShowDegree()
-
+        self.timer.Start(100)
+        self.ShowData()
+    def Notify(self):
+        self.Statusbar.SetStatusText("Degree: %.4f°"%(self.de))
+        #self.Text.SetLabel("Degree: %.4f°"%(self.de))
 
     def RefreshData(self, data):
         self.DegreeData = data
@@ -83,15 +91,14 @@ class SketchFrame(wx.Frame):
             if diff < 0:
                 self.List.Delete(self.List.GetCount() - 1) 
             diff = len(data) - self.List.GetCount()
-
+        self.ShowDegree()
 
     def ShowDegree(self):
-        de = self.DegreeData[self.List.GetSelection()]
-        while de < 0:
-            de = 360 + de
-        while de >= 360:
-            de = de - 360
+        self.de = self.DegreeData[self.List.GetSelection()]
+        while self.de < 0:
+            self.de = 360 + self.de
+        while self.de >= 360:
+            self.de = self.de - 360
 
-        self.Clock.SetDegree(de)
-        self.Statusbar.SetStatusText("Degree: %.4f°"%(de))
-        self.Text.SetLabel("Degree: %.4f°"%(de))
+        self.Clock.SetDegree(self.de)
+        
