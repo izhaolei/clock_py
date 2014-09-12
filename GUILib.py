@@ -32,9 +32,6 @@ class SketchFrame(wx.Frame):
         wx.Frame.__init__(self, parent, -1, "Degree Measure")
         self.SetMinSize((700, 450))
         self.Statusbar = self.CreateStatusBar()
-        self.timer = wx.PyTimer(self.Notify)
-        self.timer.Start(100)
-        self.Notify()
         menu = wx.Menu()
         exit = menu.Append(-1, "Exit")
         self.Bind(wx.EVT_MENU, self.OnExit, exit)
@@ -50,6 +47,10 @@ class SketchFrame(wx.Frame):
         self.Text.SetMaxSize((-1,17))
         self.Text.SetBackgroundColour(self.GetBackgroundColour())
         sz.Add(self.Text, pos=(1,0), flag=wx.ALIGN_CENTER, border=5)
+
+        self.timer = wx.PyTimer(self.Notify)
+        self.timer.Start(100)
+        self.Notify()
 
         self.Clock = AnalogClock(self,-1, wx.DefaultPosition)
         self.Clock.SetClockStyle(SHOW_MINUTES_HAND|SHOW_MINUTES_TICKS|TICKS_CIRCLE)
@@ -73,24 +74,25 @@ class SketchFrame(wx.Frame):
     def OnExit(self, event):
         self.Close()
 
-
+    
     def EvtListBox(self, event):
         self.ShowDegree()
         self.timer.Start(100)
-        self.ShowData()
+        self.Notify()
+
     def Notify(self):
         self.Statusbar.SetStatusText("Degree: %.4f°"%(self.de))
-        #self.Text.SetLabel("Degree: %.4f°"%(self.de))
-
+        self.Text.SetLabel("Degree: %.4f°"%(self.de))
+        #self.Show()
     def RefreshData(self, data):
         self.DegreeData = data
-        diff = len(data) - self.List.GetCount()
-        while diff:
-            if diff > 0:
-                self.List.Insert(self.List.GetCount() + 1) 
-            if diff < 0:
-                self.List.Delete(self.List.GetCount() - 1) 
-            diff = len(data) - self.List.GetCount()
+        #diff = len(data) - self.List.GetCount()
+        #while diff:
+            #if diff > 0:
+                #self.List.Insert(self.List.GetCount() + 1) 
+            #if diff < 0:
+                #self.List.Delete(self.List.GetCount() - 1) 
+            #diff = len(data) - self.List.GetCount()
         self.ShowDegree()
 
     def ShowDegree(self):
